@@ -58,7 +58,16 @@
     <el-table v-loading="loading" :data="list" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="文章编号" prop="id" width="120" />
-      <el-table-column label="文章标题" prop="news_title" :show-overflow-tooltip="true" />
+      <el-table-column label="文章标题" prop="news_title" :show-overflow-tooltip="true">
+        <template slot-scope="scope">
+          <span v-if="!webInfo.webSite">
+            {{scope.row.news_title}}
+          </span>
+          <span v-else>
+            <a :href="webInfo.webSite+'/'+scope.row.path_name+'/'+scope.row.id+'.html'" target="_blank"><span>{{scope.row.news_title}}</span></a>
+          </span>
+        </template>
+      </el-table-column>
       <el-table-column label="所属栏目" prop="cateList" width="160">
         <template slot-scope="scope">
           <span>{{showNewsCate(scope.row.cateList)}}</span>
@@ -75,6 +84,12 @@
           ></el-image>
         </template>
       </el-table-column>
+      <el-table-column
+        label="浏览量"
+        align="center"
+        width="100"
+        prop="news_hits"
+      ></el-table-column>
       <el-table-column
         label="状态"
         align="center"
@@ -145,6 +160,12 @@
           <el-col :span="24">
             <el-form-item label="关键词" prop="keywords">
               <el-input v-model="form.keywords" placeholder="请输入文章关键词" />
+            </el-form-item>
+          </el-col>
+
+          <el-col :span="24">
+            <el-form-item label="描述" prop="description">
+              <el-input v-model="form.description" placeholder="请输入文章描述" />
             </el-form-item>
           </el-col>
 
@@ -346,6 +367,7 @@ export default {
         ],
       },
       createFormRules: [],
+      webInfo: {}
     };
   },
   created() {
@@ -372,6 +394,7 @@ export default {
           "parent_id"
         );
         this.loading = false;
+        this.webInfo = response.data.webInfo || {}
       });
     },
     /** 转换菜单数据结构 */
@@ -420,6 +443,7 @@ export default {
         title: "",
         cateIds: [],
         keywords: "",
+        description: "",
         source: "",
         excerpt: "",
         isJump: "0",
@@ -482,6 +506,7 @@ export default {
           title: info.news_title,
           cateIds: response.data.menus,
           keywords: info.news_keywords,
+          description: info.news_description,
           source: info.news_source,
           excerpt: info.news_excerpt,
           isJump: "" + info.is_jump,
@@ -500,6 +525,9 @@ export default {
         }
         if(info.is_slide==1){
           this.form.attr.push("3");
+        }
+        if(info.footer_recommended==1){
+          this.form.attr.push("4");
         }
         (this.imageUrl = info.thumbnail
           ? this.apiUrl + "/" + info.thumbnail

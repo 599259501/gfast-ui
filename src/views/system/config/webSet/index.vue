@@ -7,6 +7,15 @@
       <el-form-item label="站点名称" prop="webName">
         <el-input v-model="ruleForm.webName"></el-input>
       </el-form-item>
+      <el-form-item label="首页标题" prop="webTitle">
+        <el-input v-model="ruleForm.webTitle"></el-input>
+      </el-form-item>
+      <el-form-item label="首页描述" prop="webDescript">
+        <el-input v-model="ruleForm.webDescript"></el-input>
+      </el-form-item>
+      <el-form-item label="首页关键字" prop="webKeyword">
+        <el-input v-model="ruleForm.webKeyword"></el-input>
+      </el-form-item>
       <el-form-item label="站点网址" prop="webSite">
         <el-input v-model="ruleForm.webSite"></el-input>
       </el-form-item>
@@ -101,6 +110,9 @@ export default {
             recordInfo: data.web_content.recordInfo,
             statisticsCode: data.web_content.statisticsCode,
             CopyrightInfo: data.web_content.CopyrightInfo,
+            webTitle: data.web_content.webTitle,
+            webDescript: data.web_content.webDescript,
+            webKeyword: data.web_content.webKeyword
           };
           this.imageUrl = this.apiUrl + "/" + this.ruleForm.webLogo;
         }

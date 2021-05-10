@@ -128,6 +128,12 @@
               />
             </el-form-item>
           </el-col>
+          <!-- 该栏目对应的路径 -->
+          <el-col :span="24">
+            <el-form-item label="栏目路径" prop="path_name">
+              <el-input v-model="form.path_name" placeholder="请输入栏目路径名称" />
+            </el-form-item>
+          </el-col>
           <el-col :span="24">
             <el-form-item label="关联模型" prop="model_id">
               <el-select v-model="form.model_id" >
@@ -162,6 +168,16 @@
               <el-input v-model="form.alias" placeholder="请输入栏目别名" />
             </el-form-item>
           </el-col>
+          <el-col :span="24">
+            <el-form-item label="栏目标题" prop="alias">
+              <el-input v-model="form.title" placeholder="请输入栏目标题" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="24">
+            <el-form-item label="栏目关键字" prop="alias">
+              <el-input v-model="form.keyword" placeholder="请输入栏目关键字" />
+            </el-form-item>
+          </el-col>
           <el-col :span="24" v-show="isJump">
             <el-form-item label="跳转地址" prop="cate_address">
               <el-input v-model="form.cate_address" placeholder="请输入跳转地址，例：http://www.baidu.com" />
@@ -173,11 +189,11 @@
                 :autosize="{minRows: 4, maxRows: 4}" :style="{width: '100%'}"></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="24" v-show="isSingle" :key="'key_'+isSingle" class="cate-content">
+<!--          <el-col :span="24" v-show="isSingle" :key="'key_'+isSingle" class="cate-content">
             <el-form-item label="单页内容">
               <Editor v-model="form.cate_content" @setEditContent="setEditContent" ref="cke"/>
             </el-form-item>
-          </el-col>
+          </el-col>-->
           <el-col :span="24">
             <el-form-item label="栏目图片" prop="description">
             <el-upload
@@ -382,6 +398,9 @@ export default {
         cate_content:'',
         list_template:"",
         content_template:"",
+        path_name: "",
+        title: "",
+        keyword: ""
       };
       this.imageUrl='';
       this.isJump=false
@@ -466,6 +485,9 @@ export default {
           cate_content:menuInfo.cate_content,
           list_template:menuInfo.list_template,
           content_template:menuInfo.content_template,
+          path_name: menuInfo.path_name,
+          keyword: menuInfo.keyword,
+          title: menuInfo.title
         }
         this.imageUrl = more?(this.apiUrl+"/"+more.thumb):'',
         this.typeChange(menuInfo.cate_type)
